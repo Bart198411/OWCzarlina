@@ -9,24 +9,24 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  --bg-app: #ecf0f1;
-  --bg-surface: #ffffff;
-  --bg-surface-alt: #f4f6fa;
-  --bg-header-start: #1a3a5c;
-  --bg-header-end: #2c5282;
-  --bg-table-head: #2c3e50;
-  --bg-input: #ffffff;
-  --bg-btn-ghost: #eef3f8;
-  --text-main: #2c3e50;
-  --text-muted: #555555;
-  --text-soft: #7f8c8d;
+  --bg-app: #cfcfcf;
+  --bg-surface: #172330;
+  --bg-surface-alt: #1d2a39;
+  --bg-header-start: #152130;
+  --bg-header-end: #13202e;
+  --bg-table-head: #14202c;
+  --bg-input: #15202c;
+  --bg-btn-ghost: #273648;
+  --text-main: #eef4fb;
+  --text-muted: #c1ccd7;
+  --text-soft: #91a2b6;
   --text-inverse: #ffffff;
-  --border-soft: #dde3ea;
-  --border-input: #c5cfe0;
-  --border-ghost: #d4dce7;
-  --row-hover: #f0f7ff;
-  --row-selected: #d4e9fb;
-  --tooltip-bg: rgba(20,30,50,0.94);
+  --border-soft: #2a3a4d;
+  --border-input: #33475d;
+  --border-ghost: #395067;
+  --row-hover: #1f3143;
+  --row-selected: #2a4762;
+  --tooltip-bg: rgba(8,13,20,0.96);
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: var(--bg-app);
   color: var(--text-main);
@@ -38,14 +38,14 @@ body {
 }
 
 body.dark-mode {
-  --bg-app: #11161d;
-  --bg-surface: #18212b;
-  --bg-surface-alt: #141d27;
+  --bg-app: #10161d;
+  --bg-surface: #16212d;
+  --bg-surface-alt: #111a24;
   --bg-header-start: #0d1620;
-  --bg-header-end: #182636;
-  --bg-table-head: #0f1a24;
+  --bg-header-end: #101a25;
+  --bg-table-head: #0e1823;
   --bg-input: #111922;
-  --bg-btn-ghost: #263241;
+  --bg-btn-ghost: #253140;
   --text-main: #e8eef5;
   --text-muted: #b8c3cf;
   --text-soft: #93a3b4;
@@ -62,36 +62,37 @@ body.dark-mode {
 header {
   background: linear-gradient(135deg, var(--bg-header-start) 0%, var(--bg-header-end) 100%);
   color: var(--text-inverse);
-  padding: 8px 16px;
+  padding: 6px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18);
   z-index: 10;
 }
 
 header h1 {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
-header h1 span { opacity: 0.7; font-weight: 400; }
+header h1 span { opacity: 0.72; font-weight: 400; }
 
-.header-actions { display: flex; gap: 8px; align-items: center; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
 
 .btn {
-  padding: 5px 13px;
-  border: none;
-  border-radius: 5px;
+  padding: 6px 14px;
+  border: 1px solid transparent;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   transition: all 0.15s;
   white-space: nowrap;
 }
-.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn:hover { opacity: 0.96; transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btn-primary   { background: #2980b9; color: #fff; }
 .btn-warning   { background: #e67e22; color: #fff; }
@@ -103,6 +104,7 @@ header h1 span { opacity: 0.7; font-weight: 400; }
   flex: 1;
   overflow: hidden;
   min-width: 0;
+  background: var(--bg-app);
 }
 
 /* â”€â”€ MAP PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -113,12 +115,13 @@ header h1 span { opacity: 0.7; font-weight: 400; }
   min-width: 0;
   width: 100%;
   transition: width 0.22s ease, flex-basis 0.22s ease;
+  background: var(--bg-app);
 }
 
 .map-toolbar {
   display: flex;
   gap: 8px;
-  padding: 7px 10px;
+  padding: 8px 10px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-soft);
   align-items: center;
@@ -130,10 +133,10 @@ header h1 span { opacity: 0.7; font-weight: 400; }
 
 .search-wrap input {
   width: 100%;
-  padding: 6px 32px 6px 12px;
-  border: 1.5px solid var(--border-input);
+  padding: 8px 34px 8px 12px;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   background: var(--bg-input);
   color: var(--text-main);
   transition: border-color 0.15s;
@@ -151,15 +154,26 @@ header h1 span { opacity: 0.7; font-weight: 400; }
 }
 #clearSearch:hover { color: #e74c3c; }
 
-#map { flex: 1; }
+#map {
+  flex: 1;
+  background: #cfcfcf;
+}
+
+body.dark-mode #map {
+  background: #9b9fa5;
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
 
 .map-footer {
   display: flex;
   gap: 14px;
-  padding: 5px 10px;
+  padding: 6px 10px;
   background: var(--bg-surface);
   border-top: 1px solid var(--border-soft);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   align-items: center;
   flex-shrink: 0;
   color: var(--text-muted);
@@ -168,27 +182,18 @@ header h1 span { opacity: 0.7; font-weight: 400; }
 .legend-item { display: flex; align-items: center; gap: 5px; }
 .legend-dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.25); flex-shrink: 0; }
 
-.edit-hint {
-  margin-left: auto;
-  font-style: italic;
-  color: #e67e22;
-  font-weight: 600;
-  display: none;
-}
-.edit-mode-active .edit-hint { display: block; }
-
 /* â”€â”€ TABLE PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .table-panel {
-  flex: 0 0 var(--table-panel-width, 460px);
+  flex: 0 0 var(--table-panel-width, 344px);
   display: flex;
   flex-direction: column;
   background: var(--bg-surface);
-  border-left: 2px solid var(--border-soft);
+  border-left: 1px solid var(--border-soft);
   overflow: hidden;
   min-width: 0;
-  width: var(--table-panel-width, 460px);
-  max-width: calc(100vw - 140px);
-  box-shadow: -10px 0 24px rgba(26, 58, 92, 0.10);
+  width: var(--table-panel-width, 344px);
+  max-width: calc(100vw - 180px);
+  box-shadow: none;
   transition: width 0.22s ease, flex-basis 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
@@ -206,7 +211,7 @@ header h1 span { opacity: 0.7; font-weight: 400; }
 }
 
 .table-header {
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: var(--bg-surface-alt);
   border-bottom: 1px solid var(--border-soft);
   display: flex;
@@ -214,26 +219,27 @@ header h1 span { opacity: 0.7; font-weight: 400; }
   justify-content: space-between;
   flex-shrink: 0;
 }
-.table-header strong { font-size: 0.88rem; color: var(--text-main); }
+.table-header strong { font-size: 0.9rem; color: var(--text-main); }
 .table-header-left,
 .table-header-right { display: flex; align-items: center; gap: 8px; }
-#domekCount { font-size: 0.76rem; color: var(--text-soft); background: var(--bg-btn-ghost); padding: 2px 8px; border-radius: 10px; }
+#domekCount { font-size: 0.73rem; color: var(--text-soft); background: var(--bg-btn-ghost); padding: 3px 9px; border-radius: 999px; }
 
 .table-scroll { overflow: auto; flex: 1; }
 
-table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 0.83rem; table-layout: auto; }
+table { width: max-content; min-width: 0; border-collapse: collapse; font-size: 0.83rem; table-layout: auto; }
 
 thead { position: sticky; top: 0; z-index: 1; }
 thead th {
   background: var(--bg-table-head);
   color: var(--text-inverse);
-  padding: 7px 10px;
+  padding: 9px 10px;
   text-align: left;
   font-weight: 600;
-  font-size: 0.77rem;
+  font-size: 0.73rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
+  width: 1%;
 }
 
 thead tr.filter-row th {
@@ -250,11 +256,12 @@ thead tr.filter-row th {
 
 .col-filter {
   width: 100%;
-  min-width: 72px;
-  padding: 5px 7px;
+  min-width: 0;
+  max-width: 12ch;
+  padding: 6px 8px;
   border: 1px solid var(--border-input);
   border-radius: 6px;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   background: var(--bg-input);
   color: var(--text-main);
 }
@@ -265,7 +272,7 @@ thead tr.filter-row th {
   box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
 }
 
-tbody td { padding: 5px 10px; border-bottom: 1px solid var(--border-soft); vertical-align: middle; white-space: nowrap; }
+tbody td { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: middle; white-space: nowrap; width: 1%; }
 tbody tr:hover td { background: var(--row-hover); cursor: pointer; }
 tbody tr.selected td { background: var(--row-selected); }
 tbody tr.selected td:first-child { font-weight: 700; }
@@ -290,6 +297,28 @@ tbody tr.hidden-row { display: none; }
   .table-panel {
     max-width: 100vw;
     --table-panel-width: min(100vw, 420px);
+  }
+}
+
+@media (min-width: 1100px) {
+  header {
+    padding: 5px 12px;
+  }
+
+  header h1 {
+    font-size: 0.92rem;
+  }
+
+  .map-toolbar {
+    padding: 6px 8px;
+  }
+
+  #map {
+    padding: 0;
+  }
+
+  .table-panel {
+    --table-panel-width: 344px;
   }
 }
 
@@ -343,35 +372,6 @@ tbody tr.hidden-row { display: none; }
 .domek-tip .tip-label { opacity: 0.65; min-width: 90px; }
 .domek-tip .tip-val { font-weight: 600; }
 
-/* â”€â”€ EDIT MODE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.edit-banner {
-  position: fixed;
-  top: 54px; left: 50%; transform: translateX(-50%);
-  background: #e67e22; color: #fff;
-  padding: 5px 18px;
-  border-radius: 20px;
-  font-size: 0.8rem; font-weight: 600;
-  z-index: 2000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  display: none;
-  pointer-events: none;
-}
-.edit-banner.visible { display: block; }
-
-#coordDisplay {
-  position: fixed;
-  background: #1a252f;
-  color: #2ecc71;
-  padding: 5px 11px;
-  border-radius: 5px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.78rem;
-  z-index: 3000;
-  display: none;
-  pointer-events: none;
-  border: 1px solid #2ecc71;
-}
-
 /* â”€â”€ NO DATA MSG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .no-data {
   text-align: center;
@@ -391,9 +391,6 @@ tbody tr.hidden-row { display: none; }
       Załaduj CSV
       <input type="file" id="csvFileInput" accept=".csv" style="display:none">
     </label>
-    <button class="btn btn-warning" id="btnEditMode" title="Włącz tryb edycji pozycji domków">
-      Edytuj pozycje
-    </button>
   </div>
 </header>
 
@@ -423,7 +420,6 @@ tbody tr.hidden-row { display: none; }
         <div class="legend-dot" style="background:#f1c40f"></div>
         <span><b>MP</b> - Mały z prysznicem</span>
       </div>
-      <span class="edit-hint">Kliknij mapę -> kopiuje współrzędne</span>
     </div>
   </div>
 
@@ -446,12 +442,6 @@ tbody tr.hidden-row { display: none; }
     </div>
   </div>
 </div>
-
-<!-- Edit mode banner -->
-<div class="edit-banner" id="editBanner">Tryb edycji: kliknij na mapie - współrzędne zostaną skopiowane</div>
-
-<!-- Coordinate display -->
-<div id="coordDisplay"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -558,7 +548,6 @@ function px(x, y) { return [IMG_H - y, x]; }
 let domki = [];            // aktywne dane
 let markers = {};          // numer â†’ L.marker
 let selectedNumer = null;
-let editMode = false;
 let query = '';
 let tableOpen = false;
 let columnFilters = {};
@@ -872,56 +861,7 @@ btnThemeToggle.addEventListener('click', () => {
   setTheme(!isDarkMode);
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  TRYB EDYCJI POZYCJI
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-const editBanner  = document.getElementById('editBanner');
-const coordDisp   = document.getElementById('coordDisplay');
-const mapFooter   = document.getElementById('mapFooter');
-const btnEdit     = document.getElementById('btnEditMode');
-
-btnEdit.addEventListener('click', () => {
-  editMode = !editMode;
-  if (editMode) {
-    btnEdit.textContent = 'Zakończ edycję';
-    btnEdit.classList.replace('btn-warning', 'btn-danger');
-    editBanner.classList.add('visible');
-    mapFooter.classList.add('edit-mode-active');
-    map.getContainer().style.cursor = 'crosshair';
-  } else {
-    btnEdit.textContent = 'Edytuj pozycje';
-    btnEdit.classList.replace('btn-danger', 'btn-warning');
-    editBanner.classList.remove('visible');
-    mapFooter.classList.remove('edit-mode-active');
-    map.getContainer().style.cursor = '';
-    coordDisp.style.display = 'none';
-  }
-});
-
-map.on('mousemove', (e) => {
-  if (!editMode) return;
-  const x = Math.round(e.latlng.lng);
-  const y = Math.round(IMG_H - e.latlng.lat);
-  coordDisp.textContent = `x=${x}  y=${y}`;
-  coordDisp.style.display = 'block';
-  coordDisp.style.left = (e.originalEvent.clientX + 14) + 'px';
-  coordDisp.style.top  = (e.originalEvent.clientY - 8)  + 'px';
-});
-
-map.on('mouseout', () => { coordDisp.style.display = 'none'; });
 map.on('zoom zoomend', updateMarkerZoomScale);
-
-map.on('click', (e) => {
-  if (!editMode) return;
-  const x = Math.round(e.latlng.lng);
-  const y = Math.round(IMG_H - e.latlng.lat);
-  const txt = `x=${x},y=${y}`;
-  navigator.clipboard.writeText(txt).catch(() => {});
-  // Flashback
-  coordDisp.textContent = `Skopiowano: ${txt}`;
-  coordDisp.style.color = '#2ecc71';
-  setTimeout(() => { coordDisp.style.color = '#2ecc71'; }, 1500);
-});
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  ĹADOWANIE CSV  (FileReader â€“ dziaĹ‚a bez serwera)
