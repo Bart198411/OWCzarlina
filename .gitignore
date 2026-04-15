@@ -7,3 +7,6 @@ desktop.ini
 *.tmp
 *.bak
 *.swp
+
+node_modules/
+coverage/
