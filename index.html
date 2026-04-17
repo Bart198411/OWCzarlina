@@ -7,26 +7,29 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+#map, .domek-icon, .leaflet-container * { transition: none !important; }
 
 body {
-  --bg-app: #cfcfcf;
-  --bg-surface: #172330;
-  --bg-surface-alt: #1d2a39;
-  --bg-header-start: #152130;
-  --bg-header-end: #13202e;
-  --bg-table-head: #14202c;
-  --bg-input: #15202c;
-  --bg-btn-ghost: #273648;
-  --text-main: #eef4fb;
-  --text-muted: #c1ccd7;
-  --text-soft: #91a2b6;
+  --bg-app: #f0f2f5;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #f8f9fa;
+  --bg-header-start: #1a3a5c;
+  --bg-header-end: #172b47;
+  --bg-table-head: #2c4a6a;
+  --bg-input: #ffffff;
+  --bg-btn-ghost: #e8edf2;
+  --text-main: #1a2733;
+  --text-muted: #4a5a6a;
+  --text-soft: #7a8a9a;
   --text-inverse: #ffffff;
-  --border-soft: #2a3a4d;
-  --border-input: #33475d;
-  --border-ghost: #395067;
-  --row-hover: #1f3143;
-  --row-selected: #2a4762;
-  --tooltip-bg: rgba(8,13,20,0.96);
+  --border-soft: #d0d8e0;
+  --border-input: #b8c4ce;
+  --border-ghost: #c5d0da;
+  --row-hover: #f0f5fa;
+  --row-selected: #dbeafe;
+  --tooltip-bg: rgba(15,25,40,0.95);
+  --border-row: rgba(0,0,0,0.08);
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: var(--bg-app);
   color: var(--text-main);
@@ -56,6 +59,7 @@ body.dark-mode {
   --row-hover: #1f3143;
   --row-selected: #29445c;
   --tooltip-bg: rgba(8,13,20,0.96);
+  --border-row: rgba(255,255,255,0.08);
 }
 
 /* â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -156,15 +160,28 @@ header h1 span { opacity: 0.72; font-weight: 400; }
 
 #map {
   flex: 1;
-  background: #cfcfcf;
+  background: #d0d4d9;
 }
 
 body.dark-mode #map {
-  background: #9b9fa5;
+  background: #2a3540;
 }
 
 .leaflet-container {
   font-family: inherit;
+}
+
+body.dark-mode .leaflet-bar a {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border-bottom-color: var(--border-soft);
+}
+body.dark-mode .leaflet-bar a:hover {
+  background-color: var(--bg-surface-alt);
+}
+body.dark-mode .leaflet-bar {
+  border-color: var(--border-soft);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 .map-footer {
@@ -272,7 +289,7 @@ thead tr.filter-row th {
   box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
 }
 
-tbody td { padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: middle; white-space: nowrap; width: 1%; }
+tbody td { padding: 7px 10px; border-bottom: 1px solid var(--border-row); vertical-align: middle; white-space: nowrap; width: 1%; }
 tbody tr:hover td { background: var(--row-hover); cursor: pointer; }
 tbody tr.selected td { background: var(--row-selected); }
 tbody tr.selected td:first-child { font-weight: 700; }
