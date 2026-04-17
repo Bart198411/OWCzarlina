@@ -7,29 +7,29 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-*, *::before, *::after { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
-#map, .domek-icon, .leaflet-container * { transition: none !important; }
+*, *::before, *::after { transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+#map, #map *, .domek-icon, .leaflet-container * { transition: none !important; }
 
 body {
-  --bg-app: #f0f2f5;
+  --bg-app: #eef1f6;
   --bg-surface: #ffffff;
-  --bg-surface-alt: #f8f9fa;
-  --bg-header-start: #1a3a5c;
-  --bg-header-end: #172b47;
-  --bg-table-head: #2c4a6a;
+  --bg-surface-alt: #f4f6fa;
+  --bg-header-start: #1c3f6e;
+  --bg-header-end: #163260;
+  --bg-table-head: #2a4e7c;
   --bg-input: #ffffff;
-  --bg-btn-ghost: #e8edf2;
-  --text-main: #1a2733;
-  --text-muted: #4a5a6a;
-  --text-soft: #7a8a9a;
+  --bg-btn-ghost: #dde4ed;
+  --text-main: #0d1b2a;
+  --text-muted: #3d5166;
+  --text-soft: #6b8299;
   --text-inverse: #ffffff;
-  --border-soft: #d0d8e0;
-  --border-input: #b8c4ce;
-  --border-ghost: #c5d0da;
-  --row-hover: #f0f5fa;
-  --row-selected: #dbeafe;
-  --tooltip-bg: rgba(15,25,40,0.95);
-  --border-row: rgba(0,0,0,0.08);
+  --border-soft: #c8d4e0;
+  --border-input: #aebdcc;
+  --border-ghost: #bfccd8;
+  --row-hover: #eaf1fb;
+  --row-selected: #c8e0fd;
+  --tooltip-bg: rgba(10,20,35,0.96);
+  --border-row: rgba(0,0,0,0.07);
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: var(--bg-app);
   color: var(--text-main);
@@ -41,25 +41,25 @@ body {
 }
 
 body.dark-mode {
-  --bg-app: #10161d;
-  --bg-surface: #16212d;
-  --bg-surface-alt: #111a24;
-  --bg-header-start: #0d1620;
-  --bg-header-end: #101a25;
-  --bg-table-head: #0e1823;
-  --bg-input: #111922;
-  --bg-btn-ghost: #253140;
-  --text-main: #e8eef5;
-  --text-muted: #b8c3cf;
-  --text-soft: #93a3b4;
+  --bg-app: #080d12;
+  --bg-surface: #0f1a24;
+  --bg-surface-alt: #0b131c;
+  --bg-header-start: #060e17;
+  --bg-header-end: #091421;
+  --bg-table-head: #081018;
+  --bg-input: #0d1720;
+  --bg-btn-ghost: #1a2d3f;
+  --text-main: #dde8f2;
+  --text-muted: #8ea8be;
+  --text-soft: #5c7a94;
   --text-inverse: #ffffff;
-  --border-soft: #2b3a49;
-  --border-input: #314456;
-  --border-ghost: #385067;
-  --row-hover: #1f3143;
-  --row-selected: #29445c;
-  --tooltip-bg: rgba(8,13,20,0.96);
-  --border-row: rgba(255,255,255,0.08);
+  --border-soft: #1e3044;
+  --border-input: #253d55;
+  --border-ghost: #2c4860;
+  --row-hover: #142030;
+  --row-selected: #1a3a58;
+  --tooltip-bg: rgba(4,9,16,0.97);
+  --border-row: rgba(255,255,255,0.06);
 }
 
 /* â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -160,11 +160,11 @@ header h1 span { opacity: 0.72; font-weight: 400; }
 
 #map {
   flex: 1;
-  background: #d0d4d9;
+  background: #c8cdd4;
 }
 
 body.dark-mode #map {
-  background: #2a3540;
+  background: #1a2530;
 }
 
 .leaflet-container {
@@ -181,7 +181,29 @@ body.dark-mode .leaflet-bar a:hover {
 }
 body.dark-mode .leaflet-bar {
   border-color: var(--border-soft);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+#btnThemeToggle {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.15rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+#btnThemeToggle:hover {
+  background: rgba(255,255,255,0.28);
+  transform: scale(1.12);
+  opacity: 1;
 }
 
 .map-footer {
@@ -403,7 +425,7 @@ tbody tr.hidden-row { display: none; }
 <header>
   <h1>Ośrodek Wypoczynkowy Czarlina &nbsp;<span>- Politechnika Gdańska</span></h1>
   <div class="header-actions">
-    <button class="btn btn-ghost" id="btnThemeToggle" title="Przełącz tryb jasny i ciemny">Dark mode</button>
+    <button id="btnThemeToggle" title="Przełącz tryb jasny/ciemny">🌙</button>
     <label class="btn btn-primary" title="Załaduj plik CSV z danymi domków">
       Załaduj CSV
       <input type="file" id="csvFileInput" accept=".csv" style="display:none">
@@ -628,7 +650,7 @@ function setTableOpen(nextOpen) {
 function setTheme(nextDarkMode) {
   isDarkMode = !!nextDarkMode;
   document.body.classList.toggle('dark-mode', isDarkMode);
-  btnThemeToggle.textContent = isDarkMode ? 'Light mode' : 'Dark mode';
+  btnThemeToggle.textContent = isDarkMode ? '☀️' : '🌙';
   localStorage.setItem('czarlina-theme', isDarkMode ? 'dark' : 'light');
 }
 
