@@ -697,14 +697,6 @@ function buildTableHead() {
     filterTh.appendChild(input);
     filterRow.appendChild(filterTh);
 
-    if (i === 0) {
-      const thC = document.createElement('th');
-      thC.style.width = '36px';
-      labelRow.appendChild(thC);
-
-      const filterThC = document.createElement('th');
-      filterRow.appendChild(filterThC);
-    }
   });
 
   thead.appendChild(labelRow);
@@ -722,16 +714,14 @@ function buildTableRows() {
     if (!matchesQuery(d)) tr.classList.add('hidden-row');
     if (d.numer === selectedNumer) tr.classList.add('selected');
 
-    cols.forEach((k, i) => {
+    cols.forEach((k) => {
       const td = document.createElement('td');
-      td.textContent = d[k] !== undefined ? d[k] : '';
-      tr.appendChild(td);
-      if (i === 0) {
-        // Kolumna koloru
-        const tdC = document.createElement('td');
-        tdC.innerHTML = `<span class="color-swatch" style="background:${d.kolor};border-color:rgba(0,0,0,0.2)"></span>`;
-        tr.appendChild(tdC);
+      if (k === 'typ') {
+        td.innerHTML = `<span class="color-swatch" style="background:${d.kolor};border-color:rgba(0,0,0,0.2)"></span>`;
+      } else {
+        td.textContent = d[k] !== undefined ? d[k] : '';
       }
+      tr.appendChild(td);
     });
 
     tr.addEventListener('click', () => selectDomek(d.numer, true));
