@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Czarlina - Mapa Interaktywna</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 *, *::before, *::after { transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
@@ -419,6 +420,45 @@ tbody tr.hidden-row { display: none; }
   color: var(--text-soft);
   font-size: 0.85rem;
 }
+
+/* ── FOTO 360 MARKERS ─────────────────────────────────────────────── */
+.foto360-icon {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  border: 2px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  transition: transform 0.15s, background 0.15s;
+}
+.foto360-icon:hover { background: #2980b9; transform: scale(1.15); }
+.foto360-icon svg { width: 16px; height: 16px; }
+
+/* ── FOTO 360 MODAL ───────────────────────────────────────────────── */
+.foto360-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 3000;
+  display: none;
+  flex-direction: column;
+}
+.foto360-bar {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  background: #111;
+  color: #fff;
+  display: flex; align-items: center; gap: 12px;
+}
+.foto360-bar span { flex: 1; font-size: 0.9rem; font-weight: 600; }
+.foto360-bar button {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff; border-radius: 6px;
+  padding: 4px 12px; cursor: pointer; font-size: 0.85rem;
+}
+.foto360-bar button:hover { background: rgba(255,255,255,0.22); }
+#foto360Viewer { flex: 1; }
 </style>
 </head>
 <body>
@@ -486,7 +526,18 @@ tbody tr.hidden-row { display: none; }
   </div>
 </div>
 
+
+<!-- FOTO 360 MODAL -->
+<div id="foto360Modal" class="foto360-modal">
+  <div class="foto360-bar">
+    <span id="foto360Label"></span>
+    <button id="foto360Close">✕ Zamknij</button>
+  </div>
+  <div id="foto360Viewer"></div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 <script src="src/utils.js"></script>
 <script>
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -885,9 +936,90 @@ function loadData(data) {
   updateMarkerZoomScale();
 }
 
+
+// ════════════════════════════════════════════════════════════════
+//  FOTO 360
+// ════════════════════════════════════════════════════════════════
+const MAP_BOUNDS = {
+  lat_min: 54 + 1/60 + 42.8/3600,   // SW (lewy-dolny)
+  lon_min: 17 + 56/60 + 16.1/3600,
+  lat_max: 54.032001915852184,        // NE (prawy-górny)
+  lon_max: 17.94082188518268
+};
+
+function gpsToPixel(lat, lon) {
+  const x = (lon - MAP_BOUNDS.lon_min) / (MAP_BOUNDS.lon_max - MAP_BOUNDS.lon_min) * IMG_W;
+  const y = (MAP_BOUNDS.lat_max - lat) / (MAP_BOUNDS.lat_max - MAP_BOUNDS.lat_min) * IMG_H;
+  return {
+    x: Math.max(0, Math.min(IMG_W, x)),
+    y: Math.max(0, Math.min(IMG_H, y))
+  };
+}
+
+let foto360Viewer = null;
+const foto360Markers = {};
+
+function buildFoto360Markers(fotos) {
+  Object.values(foto360Markers).forEach(m => m.remove());
+  fotos.forEach(foto => {
+    const { x, y } = gpsToPixel(foto.lat, foto.lon);
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="foto360-icon" title="${foto.label || foto.file}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+      </div>`,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    });
+    const m = L.marker(px(x, y), { icon, zIndexOffset: 500 })
+      .addTo(map)
+      .bindTooltip(foto.label || 'Panorama 360°', { className: 'domek-tip', direction: 'top', offset: [0, -16] });
+    m.on('click', () => openFoto360(foto));
+    foto360Markers[foto.id] = m;
+  });
+}
+
+function openFoto360(foto) {
+  const modal = document.getElementById('foto360Modal');
+  document.getElementById('foto360Label').textContent = foto.label || foto.file.split('/').pop();
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => {
+    if (foto360Viewer) { foto360Viewer.destroy(); foto360Viewer = null; }
+    foto360Viewer = pannellum.viewer('foto360Viewer', {
+      type: 'equirectangular',
+      panorama: foto.file,
+      autoLoad: true,
+      showControls: true,
+      mouseZoom: true,
+      compass: false
+    });
+  });
+}
+
+function closeFoto360() {
+  document.getElementById('foto360Modal').style.display = 'none';
+  if (foto360Viewer) { foto360Viewer.destroy(); foto360Viewer = null; }
+}
+
+document.getElementById('foto360Close').addEventListener('click', closeFoto360);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFoto360(); });
+
+async function loadFoto360() {
+  try {
+    const r = await fetch('data/foto360.json', { cache: 'no-store' });
+    if (!r.ok) return;
+    const fotos = await r.json();
+    buildFoto360Markers(fotos);
+  } catch {}
+}
+
 // Start z danymi z pliku CSV
 initTheme();
 loadInitialCSV();
+loadFoto360();
 </script>
 </body>
 </html>
