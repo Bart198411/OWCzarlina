@@ -263,9 +263,9 @@ body.dark-mode .leaflet-bar {
 .table-header-right { display: flex; align-items: center; gap: 8px; }
 #domekCount { font-size: 0.73rem; color: var(--text-soft); background: var(--bg-btn-ghost); padding: 3px 9px; border-radius: 999px; }
 
-.table-scroll { overflow: auto; flex: 1; }
+.table-scroll { overflow-x: hidden; overflow-y: auto; flex: 1; }
 
-table { width: max-content; min-width: 0; border-collapse: collapse; font-size: 0.83rem; table-layout: auto; }
+table { width: 100%; min-width: 0; border-collapse: collapse; font-size: 0.83rem; table-layout: fixed; }
 
 thead { position: sticky; top: 0; z-index: 1; }
 thead th {
@@ -277,8 +277,9 @@ thead th {
   font-size: 0.73rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  width: 1%;
 }
 
 thead tr.filter-row th {
@@ -311,7 +312,7 @@ thead tr.filter-row th {
   box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
 }
 
-tbody td { padding: 7px 10px; border-bottom: 1px solid var(--border-row); vertical-align: middle; white-space: nowrap; width: 1%; }
+tbody td { padding: 7px 10px; border-bottom: 1px solid var(--border-row); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 tbody tr:hover td { background: var(--row-hover); cursor: pointer; }
 tbody tr.selected td { background: var(--row-selected); }
 tbody tr.selected td:first-child { font-weight: 700; }
@@ -698,8 +699,7 @@ function buildTableHead() {
 
     if (i === 0) {
       const thC = document.createElement('th');
-      thC.textContent = 'Kol.';
-      thC.style.width = '32px';
+      thC.style.width = '36px';
       labelRow.appendChild(thC);
 
       const filterThC = document.createElement('th');
