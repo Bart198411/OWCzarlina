@@ -483,13 +483,11 @@ tbody tr.hidden-row { display: none; }
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="src/utils.js"></script>
 <script>
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  DOMYĹšLNE DANE (Ĺ‚adowane przy starcie; moĹĽna nadpisaÄ‡ przez CSV)
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// Kolor przypisywany automatycznie na podstawie typ â€“ nie ma go w CSV
-const TYP_KOLOR = { DP: '#e74c3c', RP: '#3498db', MP: '#f1c40f' };
-
 const DEFAULT_DATA = [
   // Kolumny CSV: numer, typ, rok_budowy, wielkosc, x, y
   // kolor jest wyliczany automatycznie z typ (DP=czerwony, RP=niebieski, MP=ĹĽĂłĹ‚ty)
@@ -578,9 +576,6 @@ const imgBounds = [[0, 0], [IMG_H, IMG_W]];
 L.imageOverlay('INBOX/Osrodek.png', imgBounds).addTo(map);
 map.fitBounds(imgBounds);
 
-// Konwersja pikseli (0,0 = lewy-gĂłrny) â†’ Leaflet CRS.Simple
-function px(x, y) { return [IMG_H - y, x]; }
-
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  STAN APLIKACJI
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -592,53 +587,7 @@ let tableOpen = false;
 let columnFilters = {};
 let isDarkMode = false;
 
-// Kolumny ktĂłre NIE trafiÄ… do tabeli (tylko pozycja/styl)
-const HIDDEN_COLS = new Set(['tekst', 'x', 'y', 'kolor']);
 
-// Przyjazne nazwy kolumn
-const COL_LABELS = {
-  numer: 'Nr',
-  typ: 'Typ',
-  rok_budowy: 'Rok budowy',
-  wielkosc: 'Wielkość (m²)'
-};
-function buildTekst(d) {
-  return [
-    d.numer ? `nr ${d.numer}` : '',
-    d.typ ? `typ ${d.typ}` : '',
-    d.rok_budowy ? `rok ${d.rok_budowy}` : '',
-    d.wielkosc ? `wielkosc ${d.wielkosc}` : '',
-    d.x !== undefined && d.x !== '' ? `x ${d.x}` : '',
-    d.y !== undefined && d.y !== '' ? `y ${d.y}` : ''
-  ].filter(Boolean).join(' ');
-}
-
-function normalizeDomek(obj) {
-  const d = { ...obj };
-
-  d.numer = parseInt(d.numer);
-  d.rok_budowy = parseInt(d.rok_budowy);
-  d.wielkosc = parseFloat(d.wielkosc);
-  d.x = parseFloat(d.x);
-  d.y = parseFloat(d.y);
-  d.tekst = buildTekst(d);
-  d.kolor = TYP_KOLOR[d.typ] || '#888888';
-
-  return d;
-}
-
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  BUDOWANIE TOOLTIPA
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-function buildTooltip(d) {
-  const keys = Object.keys(d).filter(k => !HIDDEN_COLS.has(k));
-  const rows = keys.slice(1).map(k => {
-    const label = COL_LABELS[k] || k;
-    const val = k === 'wielkosc' ? d[k] + ' m²' : d[k];
-    return `<div class="tip-row"><span class="tip-label">${label}:</span><span class="tip-val">${val}</span></div>`;
-  }).join('');
-  return `<div class="tip-title">Domek nr ${d.numer}</div>${rows}`;
-}
 
 function setTableOpen(nextOpen) {
   tableOpen = !!nextOpen;
@@ -673,12 +622,6 @@ function hasActiveColumnFilters() {
   return Object.values(columnFilters).some(v => String(v || '').trim());
 }
 
-function getMarkerZoomScale(zoom) {
-  const minZoom = -2;
-  const maxZoom = 3;
-  const normalized = Math.max(0, Math.min(1, (zoom - minZoom) / (maxZoom - minZoom)));
-  return (0.72 + normalized * 0.88).toFixed(3);
-}
 
 function updateMarkerZoomScale() {
   document.body.style.setProperty('--marker-zoom-scale', getMarkerZoomScale(map.getZoom()));
@@ -902,26 +845,6 @@ btnThemeToggle.addEventListener('click', () => {
 
 map.on('zoom zoomend', updateMarkerZoomScale);
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  ĹADOWANIE CSV  (FileReader â€“ dziaĹ‚a bez serwera)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-function parseCSV(text) {
-  const lines = text.trim().split(/\r?\n/);
-  if (lines.length < 2) return [];
-  // Wykryj separator: Ĺ›rednik (polski Excel) lub przecinek
-  const firstLine = lines[0].replace(/^\uFEFF/, '');
-  const sep = firstLine.includes(';') ? ';' : ',';
-  const headers = firstLine.split(sep).map(h => h.trim());
-  return lines.slice(1)
-    .filter(l => l.trim())
-    .map(line => {
-      const vals = line.split(sep).map(v => v.trim().replace(/^"|"$/g, ''));
-      const obj = {};
-      headers.forEach((h, i) => { obj[h] = vals[i] ?? ''; });
-      return normalizeDomek(obj);
-    })
-    .filter(d => !isNaN(d.numer));
-}
 
 const CSV_SOURCE = 'data/domki_clean.csv';
 

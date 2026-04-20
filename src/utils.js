@@ -1,5 +1,3 @@
-'use strict';
-
 // Mapowanie typ → kolor markera
 const TYP_KOLOR = { DP: '#e74c3c', RP: '#3498db', MP: '#f1c40f' };
 
@@ -138,15 +136,17 @@ function matchesQuery(d, query, columnFilters, displayCols) {
   });
 }
 
-module.exports = {
-  TYP_KOLOR,
-  HIDDEN_COLS,
-  COL_LABELS,
-  buildTekst,
-  normalizeDomek,
-  parseCSV,
-  px,
-  getMarkerZoomScale,
-  buildTooltip,
-  matchesQuery
-};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    TYP_KOLOR,
+    HIDDEN_COLS,
+    COL_LABELS,
+    buildTekst,
+    normalizeDomek,
+    parseCSV,
+    px,
+    getMarkerZoomScale,
+    buildTooltip,
+    matchesQuery
+  };
+}
