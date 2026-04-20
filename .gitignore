@@ -10,3 +10,7 @@ desktop.ini
 
 node_modules/
 coverage/
+
+# Zdjęcia 360° (duże pliki, nie trafiają do repozytorium)
+INBOX/*.jpg
+INBOX/*.jpeg
