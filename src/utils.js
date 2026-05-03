@@ -1,5 +1,5 @@
-// Mapowanie typ → kolor markera
-const TYP_KOLOR = { DP: '#e74c3c', RP: '#3498db', MP: '#f1c40f' };
+// Mapowanie typ → kolor markera (paleta CRT cyberpunk)
+const TYP_KOLOR = { DP: '#f97316', RP: '#5eead4', MP: '#a78bfa' };
 
 // Kolumny wykluczone z widoku tabeli i wyszukiwania globalnego
 const HIDDEN_COLS = new Set(['tekst', 'x', 'y', 'kolor']);
@@ -109,7 +109,7 @@ function buildTooltip(d) {
     const val = k === 'wielkosc' ? d[k] + ' m²' : d[k];
     return `<div class="tip-row"><span class="tip-label">${label}:</span><span class="tip-val">${val}</span></div>`;
   }).join('');
-  return `<div class="tip-title">Domek nr ${d.numer}</div>${rows}`;
+  return `<div class="tip-title">Domek nr ${d.numer}</div><div class="tip-body">${rows}</div>`;
 }
 
 /**
